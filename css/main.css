@@ -20,7 +20,7 @@ body{
     justify-content: space-around;
 }
 
-.StartBut, .NewGame, .Score, .Timer, .PauseBut{
+.StartBut, .Score, .Timer, .PauseBut{
     font-size: 20px;
     color: #FFE700;
     background-color: #320571;
@@ -29,7 +29,7 @@ body{
     padding: 5px;
     transition: transform ease-in-out .3s;
 }
-.StartBut:hover, .NewGame:hover, .Score:hover, .Timer:hover, .PauseBut:hover{
+.StartBut:hover, .Score:hover, .Timer:hover, .PauseBut:hover{
     transform: scale(1.3);
 }
 
@@ -39,6 +39,8 @@ body{
     background-color:  #FFE700;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
+    left: 70px;
 }
 
 .GameWrap{
