@@ -1,25 +1,27 @@
-
 let i=0;
 let score=0;
-let flag=true;
-$(".StartBut").click(()=>{
-    $(".Game").empty();
-    alert("Game has begun!");
+let pause=false;
+let start=false;
 
+function saveScore(score){
+    document.cookie = `${$("#nickname").val()}=${score}`;
+    alert(document.cookie);
+}
+
+$(".StartBut").click(()=>{
+    start=true;
+    $(".Game").empty();
         let Timer = setInterval(()=>{
-            if(flag){
                 $(".Game").append(`
                 <div class='Cub' id='cub${i}'></div>
                 `);
                 //$(`#${i}`).css("color", `#${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}`);
-                $(`#cub${i}`).css("position","relative");
+                $(`#cub${i}`).css("position","absolute");
                 $(`#cub${i}`).css("left",`${Math.round(Math.random()*760)}px`);
                 $(`#cub${i}`).css("top",`${Math.round(Math.random()*360)}px`);
                 $(".Cub").click(()=>{
-                    if(flag){
-                        $(`#${event.target.id}`).remove(); 
-                        // $(`#${i}`).css("background-color", `#${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}${Math.round(Math.random()*9)}`);
-                        
+                    if(!pause&&start){
+                        $(`#${event.target.id}`).remove();
                         score++;
                         $(".Score").text(`Points : ${score}`);
                     }
@@ -27,37 +29,35 @@ $(".StartBut").click(()=>{
                 $(".Timer").text(`Time Left : ${60 - i}`);
                 i++;
                 if(i==5){
-                    flag=false;
-                }
-            }else{
-                if(i==5){
-                    let nickName = prompt("Enter your nickname, please","");
+                    alert(score);
+                    $('#exampleModal').modal("show");
                     $(".Score").text("Points");
                     $(".Timer").text("Time Left");
-                    document.cookie = `${nickName}=${score}`;
+                    $(".Game").empty();
+                    //$('#saveBut').click(saveScore(score));
+                    $('#exampleModal').on('shown.bs.modal',()=>{
+                        $('#exampleModal').on('hidden.bs.modal',saveScore(score));
+                    });
                     score = 0;
                     i=0;
                     clearInterval(Timer);
-                    flag=true;
+                    pause=false;
+                    start= false;
                 }
-            }
         },1000);
+    
 });
+
+
 
 $(".PauseBut").click(()=>{
-    if(flag){
-        flag=false;
-    }else{
-        flag=true;
+    if(start){
+        if(pause){
+            pause=false;
+        }else{
+            pause=true;
+        }
     }
-});
-
-$(".NewGame").click(()=>{
-    i=0;
-    score=0;
-    $(".Score").text("Points");
-    $(".Timer").text("Time Left");
-    $(".Game").empty();
 });
 
 
