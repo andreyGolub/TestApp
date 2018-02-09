@@ -18,6 +18,7 @@ body{
     background-color: #510FAD;
     display:  flex;
     justify-content: space-around;
+    background-image: url("patternInfo.svg");
 }
 
 .StartBut, .Score, .Timer, .PauseBut{
@@ -41,6 +42,8 @@ body{
     flex-wrap: wrap;
     position: relative;
     left: 70px;
+    border: 3px solid #320571;
+    background-image: url("patternGame.svg");
 }
 
 .GameWrap{
@@ -48,6 +51,7 @@ body{
     justify-content: space-around;
     background-color: #8144D6;
     padding: 93px 0px;
+    background-image: url("patternGameWrapper.svg");
 }
 
 .Result{
@@ -57,6 +61,8 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border: 3px solid #320571;
+    background-image: url("patternResult.svg");
 }
 
 .Cub{
