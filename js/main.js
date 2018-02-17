@@ -1,65 +1,78 @@
-let i=0;
-let score=0;
-let pause=false;
-let start=false;
-let cubId=0;
-let players = [];
+let i = 0;
+let score = 0;
+let pause = false;
+let start = false;
+let cubId = 0;
 
-function compare(a, b) {
-    if(a.score > b.score) return -1;
-    if(a.score < b.score) return 1;
+function saveScore() {
+    document.cookie = $('#nickname').val() + "=" + score;
+    getScore();
 }
 
-function saveScore(){
-    let player={
-        nick:$("#nickname").val(),
-        score:score
+function getScore() {
+
+    function compare(a, b) {
+        return b[1] - a[1];
     }
-    player[length]=player;
-    players.sort(compare);
+
+    let players = document.cookie.split("; ");
+    console.log(players);
+    let res = [];
+    for (let k = 0; k < players.length; k++) {
+        let [name, score] = players[k].split("=");
+        res.push([name, score]);
+    }
+
+    res.sort(compare);
     $(".Result").empty();
-    for(let j=0;j<players.length;j++){
+    for (let j = 0; j < res.length; j++) {
         $(".Result").append(`
-        <div>${players[j].nick} = ${players[j].score}</div>
+        <div class='ResultTableElement'>${res[j][0]} = ${res[j][1]}</div>
         `);
+        console.log(document.cookie);
     }
 }
 
 $(".StartBut").click(() => {
-    i=0;
+    i = 0;
+    cubId = 0;
     score = 0;
     start = true;
     $(".Game").empty();
     let Timer = setInterval(() => {
-        if (i == 5) {
+        if (i == 3) {
             $('#exampleModal').modal("toggle");
             $(".Score").text("Points");
             $(".Timer").text("Time Left");
             $(".Game").empty();
-            
+
             clearInterval(Timer);
             pause = false;
             start = false;
-        }else{
+        } else {
+            // Just for fun
+            // for(let t =0; t<cubId;t++){
+            //     randomCub(`#cub${t}`);
+            // }
 
-            let cubCount = Math.round(Math.random()*2);
-            for(let k = -1; k < cubCount;k++){
+            let cubCount = Math.round(Math.random() * 2);
+            for (let k = -1; k < cubCount; k++) {
                 $(".Game").append(`
                 <div class='Cub' id='cub${cubId}'></div>
                 `);
                 randomCub(`#cub${cubId}`);
+
+                $(`#cub${cubId}`).click(() => {
+                    if (!pause && start) {
+                        $(`#${event.target.id}`).remove();
+                        score++;
+                        console.log(`#${event.target.id} ${score}`);
+                        $(".Score").text(`Points : ${score}`);
+                    }
+                });
+
                 cubId++;
             }
-            
-
-            $(".Cub").click(() => {
-                if (!pause && start) {
-                $(`#${event.target.id}`).remove();
-                score++;
-                $(".Score").text(`Points : ${score}`);
-                }
-            });
-
             $(".Timer").text(`Time Left : ${60 - i}`);
             i++;
         }
@@ -75,7 +88,6 @@ function randomCub(id) {
 $(".PauseBut").click(() => {
     start ? pause = !pause : pause = !pause;
 });
-
-$('#exampleModal').on('hidden.bs.modal', ()=>{
+$('#saveBut').on('click', () => {
     saveScore();
 });
