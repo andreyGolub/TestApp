@@ -40,7 +40,7 @@ $(".StartBut").click(() => {
     start = true;
     $(".Game").empty();
     let Timer = setInterval(() => {
-        if (i == 3) {
+        if (i == 60) {
             $('#exampleModal').modal("toggle");
             $(".Score").text("Points");
             $(".Timer").text("Time Left");
